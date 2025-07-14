@@ -1,0 +1,5 @@
+Digite /start para iniciar o bot
+
+Digite /cancelar para interromper o bot
+
+Digite /help para ajuda
