@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 load_dotenv()  # Carrega do arquivo .env
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+USER_ID = os.getenv("USER_ID")
+USER_ID = str(USER_ID)
 
 # Configura o logging para salvar em arquivo
 logging.basicConfig(
@@ -22,14 +24,13 @@ logging.basicConfig(
 bot = telebot.TeleBot(BOT_TOKEN)
 
 user_states = {}
-user_id = 6345032342
 users_data = {}
 regex_PIN = re.compile(r'^\d{6}$')
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    if message.chat.id == user_id:
-        user_states[user_id] = 'aguardando PIN'
+    if str(message.chat.id) == USER_ID:
+        user_states[USER_ID] = 'aguardando PIN'
         bot.reply_to(message, "Digite seu PIN")
         return
     bot.reply_to(message, "Acesso Negado !!")
@@ -37,7 +38,7 @@ def handle_start(message):
 
 @bot.message_handler(commands=['cancelar'])
 def handle_cancelar(message):
-    if user_states.get(user_id) != "comando iniciado":
+    if user_states.get(USER_ID) != "comando iniciado":
         user_states.clear()
         bot.reply_to(message, "Cancelado")
     else:
@@ -51,19 +52,19 @@ def handle_help(message):
 
 @bot.message_handler(func=lambda m: True)
 def handle_messages(message):
-    estado = user_states.get(user_id)
+    estado = user_states.get(USER_ID)
     if estado == "aguardando PIN":
         if regex_PIN.match(message.text):
-            users_data[str(user_id)+":user_PIN"]=message.text
-            user_states[user_id] = 'aguardando senha'
+            users_data[str(USER_ID)+":user_PIN"]=message.text
+            user_states[USER_ID] = 'aguardando senha'
             bot.reply_to(message, "Digite sua senha")
         else:
             bot.reply_to(message, "Digite um PIN válido")
         return
 
     if estado == "aguardando senha":
-        users_data[str(user_id)+":user_password"]=message.text
-        user_states[user_id] = 'aguardando comando'
+        users_data[str(USER_ID)+":user_password"]=message.text
+        user_states[USER_ID] = 'aguardando comando'
         bot.reply_to(message, "Digite o comando Google")
         return
 
@@ -72,8 +73,8 @@ def handle_messages(message):
         usuario = " --user-name=matheus"
         comando_google = message.text
         comando_cmd = comando_inicial + comando_google + usuario
-        user_PIN = users_data[str(user_id)+":user_PIN"]
-        user_password = users_data[str(user_id)+":user_password"]
+        user_PIN = users_data[str(USER_ID)+":user_PIN"]
+        user_password = users_data[str(USER_ID)+":user_password"]
         comandos = [
             {
                 "comando": comando_cmd,
@@ -85,8 +86,8 @@ def handle_messages(message):
             }
         ]
         bot.reply_to(message, "Iniciando comando")
-        user_states[user_id] = 'comando iniciado'
-        thread = threading.Thread(target=chamar_comando, args=(user_id,comandos))
+        user_states[USER_ID] = 'comando iniciado'
+        thread = threading.Thread(target=chamar_comando, args=(USER_ID,comandos))
         thread.start()
         return
 
