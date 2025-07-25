@@ -15,20 +15,7 @@ A valid and updated CRD registration code from Google.
 
 Certainly! Here's the English version of the `README.md`:
 
----
-
-# 🖥️ Chrome Remote Desktop Starter via Telegram
-
-This project allows you to automatically start **Chrome Remote Desktop (CRD)** on a **Ubuntu** machine by sending commands through **Telegram**, enabling remote access without manual intervention.
-
----
-
-## 🚀 Objective
-
-Allow the user to remotely initialize CRD on Ubuntu **automatically** using **Telegram**, so the machine is ready for remote access securely and quickly.
-
-
----
+--- 
 
 ## 🔧 Quick Setup
 
