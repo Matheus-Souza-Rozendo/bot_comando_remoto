@@ -20,7 +20,6 @@ logging.basicConfig(
 )
 
 
-
 bot = telebot.TeleBot(BOT_TOKEN)
 
 user_states = {}
